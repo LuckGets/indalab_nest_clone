@@ -9,20 +9,20 @@ import {
 import { Boostrap } from "./middlewares";
 import server, { type Server as HttpServer } from "http";
 import { Server as IoServer } from "socket.io";
+import { AppRouter } from "./providers/routeInstance";
 
 export class Server {
   public app: IApplication;
   private serverListener: HttpServer;
   private port: number;
   private apiPrefix: string;
-  private routes: IRouterInstance;
+  private routes: IRouterInstance = AppRouter.instance;
   private ioServer: IoServer;
   private model: IModel 
 
   constructor(options: IServerOptions, application: IApplication) {
-    const { port, routes, apiPrefix,model } = options;
+    const { port, apiPrefix,model } = options;
     this.port = port;
-    this.routes = routes;
     this.apiPrefix = apiPrefix;
     this.app = application;
     this.model = model
@@ -49,12 +49,9 @@ export class Server {
     
     // Set Not found handler
     this.app = Handler.notFoundHandler(this.app);
-    await this.model.init()
 
-    // test route path
-    this.app.get(`${this.apiPrefix}`, (req,res) => {
-      res.status(200).json({message : `This is the test path for this ${req.originalUrl}`})
-    }) 
+    // Connecting to the database
+    await this.model.init()
 
     console.log("_______Server is now Starting_______");
     // Set server lisening to the port

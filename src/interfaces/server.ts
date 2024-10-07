@@ -4,7 +4,6 @@ import { Mongoose } from "mongoose";
 export interface IServerOptions {
   port: number;
   apiPrefix: string;
-  routes: IRouterInstance;
   model : IModel
 }
 
