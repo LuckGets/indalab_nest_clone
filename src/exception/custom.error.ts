@@ -1,13 +1,11 @@
 import { IErrorArgs, StatusCode } from "../interfaces";
 
 export class AppError extends Error {
-  public message: string;
   public statusCode: number;
 
   constructor(args: IErrorArgs) {
     const { message, statusCode } = args;
     super(message);
-    this.message = message;
     this.statusCode = statusCode;
   }
 
@@ -21,5 +19,9 @@ export class AppError extends Error {
 
   public static notFound(message: string): AppError {
     return new AppError({ message, statusCode: StatusCode.NotFound });
+  }
+
+  public static internalError(message: string = "Internal Server Error. Please try again"): AppError {
+    return new AppError({ message, statusCode: StatusCode.InternalError });
   }
 }

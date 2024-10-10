@@ -5,11 +5,16 @@ import { MetadataKeys, RestMethod } from "./interface";
 import { Locals } from "../../providers";
 
 export function Controller(apiPath: string) {
-  return function(target: Function) {
+  return function(target: any) {
     const apiPrefix = Locals.apiPrefix;
     const routerInstance: IRouterInstance = AppRouter.instance;
+
+    // Instantiate the controller class to bind the constructor in the runtime
+    const controllerInstance = new target();
+
     Object.getOwnPropertyNames(target.prototype).forEach((propKey) => {
-      const routeHandler: IRequestHandler = target.prototype[propKey];
+      const routeHandler: IRequestHandler =
+        controllerInstance[propKey].bind(controllerInstance);
 
       const path: string = Reflect.getMetadata(
         MetadataKeys.Path,

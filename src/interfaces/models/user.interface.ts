@@ -1,4 +1,4 @@
-import { Document } from "mongoose";
+import { Document, Model } from "mongoose";
 
 export interface User {
   email: string;
@@ -10,3 +10,5 @@ export interface User {
 export interface UserDocument extends User, Document {
   validatePassword(str: string): Promise<boolean>;
 }
+
+export interface IUserModel extends Model<UserDocument> {}

@@ -3,7 +3,8 @@
 export enum MetadataKeys {
   Path = "path",
   Method = "method",
-  Middleware = "middleware"
+  Middleware = "middleware",
+  BodyParam = "body"
 }
 
 export enum RestMethod {
